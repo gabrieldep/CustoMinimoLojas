@@ -20,7 +20,7 @@ public:
 	void SetIdentificacao(int identificacao);
 	void SetLocalizacao(Localizacao* localizacao);
 	int GetIdentificacao();
-	void SetTrajetos(vector<Loja>* lojas);
+	void SetTrajetos(vector<Loja*>* lojas);
 	void SetTrajetos(vector<Trajeto>* lojas);
 	Localizacao GetLocalizacao();
 	vector<Trajeto> GetTrajetos();

@@ -39,12 +39,12 @@ int Loja::GetIdentificacao()
 	return this->identificacao;
 }
 
-void Loja::SetTrajetos(vector<Loja>* lojas)
+void Loja::SetTrajetos(vector<Loja*>* lojas)
 {
 	for (size_t i = 0; i < lojas->size(); i++)
 	{
-		if (this->identificacao != lojas->at(i).GetIdentificacao()) {
-			this->trajetos->push_back(*new Trajeto(this, &lojas->at(i)));
+		if (this->identificacao != lojas->at(i)->GetIdentificacao()) {
+			this->trajetos->push_back(*new Trajeto(this, lojas->at(i)));
 		}
 	}
 }
