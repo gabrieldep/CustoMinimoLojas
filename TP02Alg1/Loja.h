@@ -11,7 +11,8 @@ class Loja
 private:
 	int identificacao;
 	Localizacao* localizacao;
-	vector<Trajeto*>* trajetos;
+	vector<Trajeto>* trajetos;
+	
 public:
 	Loja();
 	Loja(int identificacao, int x, int y);
@@ -19,9 +20,9 @@ public:
 	void SetIdentificacao(int identificacao);
 	void SetLocalizacao(Localizacao* localizacao);
 	int GetIdentificacao();
-	void SetTrajetos(vector<Loja*>* lojas);
-	void SetTrajetos(vector<Trajeto*>* lojas);
+	void SetTrajetos(vector<Loja>* lojas);
+	void SetTrajetos(vector<Trajeto>* lojas);
 	Localizacao GetLocalizacao();
-	vector<Trajeto*> GetTrajetos();
+	vector<Trajeto> GetTrajetos();
 };
 

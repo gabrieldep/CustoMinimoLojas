@@ -1,4 +1,8 @@
 #include "Trajeto.h"
+#include <vector>
+#include <iostream>
+#include <algorithm>
+using namespace std;
 
 Trajeto::Trajeto()
 {
