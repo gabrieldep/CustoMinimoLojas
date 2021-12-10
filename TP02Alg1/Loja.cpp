@@ -22,7 +22,6 @@ Loja::Loja(int identificacao, int x, int y)
 
 Loja::~Loja()
 {
-	delete this->localizacao;
 }
 
 void Loja::SetIdentificacao(int identificacao)

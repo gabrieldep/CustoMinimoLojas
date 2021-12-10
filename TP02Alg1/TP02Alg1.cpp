@@ -49,21 +49,30 @@ void CadastraLojas(vector<Loja*>* lojas, int qtdLojas, FILE* arquivo)
 	}
 }
 
-void CalcularTrajetos(vector<Loja*>* lojas, vector<Trajeto>* trajetos)
+vector<Trajeto> SelecionaMelhorTrajeto(vector<Loja*>* lojas)
 {
-	for (size_t i = 0; i < lojas->size(); i++)
+	vector<Trajeto>* trajetos = new vector<Trajeto>;
+	vector<int>* inteiros = new vector<int>;
+	Trajeto* trajeto = new Trajeto();
+	int lojaSelecionada = 0;
+
+	if (trajetos->size() == 0) {
+		*trajeto = lojas->at(0)->GetTrajetos().front();
+		trajetos->push_back(*trajeto);
+	}
+	for (size_t i = 1; i < lojas->size(); i++)
 	{
-		for (size_t j = i + 1; j < lojas->size(); j++)
+		vector<Trajeto> trajetosAuxiliar = lojas->at(i)->GetTrajetos();
+		for (size_t j = 0; j < trajetosAuxiliar.size(); j++)
 		{
-			if (i != j) {
-				trajetos->push_back(*new Trajeto(lojas->at(i), lojas->at(j)));
+			*trajeto = trajetosAuxiliar.at(j);
+			if (!Utils::EstaNoVetor(trajetos, *trajeto)) {
+				trajetos->push_back(*trajeto);
+				break;
 			}
 		}
 	}
-}
-
-void SelecionaMelhorTrajeto(vector<Loja*>* lojas) 
-{
+	return *trajetos;
 }
 
 int main(int argc, const char* argv[])
@@ -82,10 +91,12 @@ int main(int argc, const char* argv[])
 		lojas->at(i)->SetTrajetos(lojas);
 	}
 
-	SelecionaMelhorTrajeto(lojas);
-
 	vector<Trajeto>* trajetos = new std::vector<Trajeto>;
-	CalcularTrajetos(lojas, trajetos);
+
+	*trajetos = SelecionaMelhorTrajeto(lojas);
 	Utils::SortTrajetos(trajetos);
+
+
+
 	fclose(arquivo);
 }
