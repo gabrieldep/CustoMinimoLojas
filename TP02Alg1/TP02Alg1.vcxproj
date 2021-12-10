@@ -147,7 +147,11 @@
   <ItemGroup>
     <ClInclude Include="Localizacao.h" />
     <ClInclude Include="Loja.h" />
+    <ClInclude Include="resource.h" />
     <ClInclude Include="Trajeto.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <ResourceCompile Include="TP02Alg1.rc" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

@@ -1,5 +1,6 @@
 #pragma once
 #include "Loja.h"
+class Loja;
 
 class Trajeto
 {

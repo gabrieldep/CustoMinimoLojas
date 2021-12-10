@@ -1,13 +1,14 @@
 #include <iostream>
 #include "Loja.h"
 #include "Trajeto.h"
+#include "Utils.cpp"
 #include <vector>
 #include <algorithm>
 #include <string>
 
 using namespace std;
 
-void SetValoresEntrada(int *qtdLojas, int* kmMaxMoto, int* qtdDrones, int* custoKmMoto, int* custoKmCaminhao, string leitura) 
+void SetValoresEntrada(int* qtdLojas, int* kmMaxMoto, int* qtdDrones, int* custoKmMoto, int* custoKmCaminhao, string leitura)
 {
 	int posicao = 0;
 	int aux = 0;
@@ -30,7 +31,7 @@ void SetValoresEntrada(int *qtdLojas, int* kmMaxMoto, int* qtdDrones, int* custo
 	}
 }
 
-void CadastraLojas(vector<Loja*>* lojas, int qtdLojas, FILE* arquivo) 
+void CadastraLojas(vector<Loja*>* lojas, int qtdLojas, FILE* arquivo)
 {
 	char Linha[100];
 	string result;
@@ -60,14 +61,18 @@ void CalcularTrajetos(vector<Loja*>* lojas, vector<Trajeto*>* trajetos)
 	}
 }
 
-bool MaiorDistancia(Trajeto* t1, Trajeto* t2)
+bool MenorDistancia(Trajeto* t1, Trajeto* t2)
 {
 	return t1->GetDistancia() > t2->GetDistancia();
 }
 
 vector<Trajeto*> SortTrajetos(vector<Trajeto*> trajetos) {
-	sort(trajetos.begin(), trajetos.end(), MaiorDistancia);
+	sort(trajetos.begin(), trajetos.end(), MenorDistancia);
 	return trajetos;
+}
+
+void SelecionaMelhorTrajeto(vector<Loja*>* lojas) 
+{
 }
 
 int main(int argc, const char* argv[])
@@ -76,15 +81,20 @@ int main(int argc, const char* argv[])
 	string result;
 	char Linha[100];
 	FILE* arquivo = fopen(argv[1], "rt");
-	result = fgets(Linha, 100, arquivo);	
-	SetValoresEntrada(&qtdLojas,&kmMaxMoto, &qtdDrones, &custoKmMoto, &custoKmCaminhao, result);
+	result = fgets(Linha, 100, arquivo);
+	SetValoresEntrada(&qtdLojas, &kmMaxMoto, &qtdDrones, &custoKmMoto, &custoKmCaminhao, result);
 
 	vector<Loja*>* lojas = new std::vector<Loja*>;
 	CadastraLojas(lojas, qtdLojas, arquivo);
+	for (size_t i = 0; i < qtdLojas; i++)
+	{
+		lojas->at(i)->SetTrajetos(lojas);
+	}
+
+	SelecionaMelhorTrajeto(lojas);
 
 	vector<Trajeto*>* trajetos = new std::vector<Trajeto*>;
 	CalcularTrajetos(lojas, trajetos);
 	*trajetos = SortTrajetos(*trajetos);
-	
 	fclose(arquivo);
 }
