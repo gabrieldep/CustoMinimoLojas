@@ -1,5 +1,6 @@
 #include <iostream>
 #include "Loja.h"
+#include "Trajeto.h"
 #include <vector>
 #include <algorithm>
 #include <string>
@@ -46,6 +47,19 @@ void CadastraLojas(vector<Loja*>* lojas, int qtdLojas, FILE* arquivo)
 	}
 }
 
+void CalcularTrajetos(vector<Loja*>* lojas, vector<Trajeto>* trajetos)
+{
+	for (size_t i = 0; i < lojas->size(); i++)
+	{
+		for (size_t j = i + 1; j < lojas->size(); j++)
+		{
+			if (i != j) {
+				trajetos->push_back(*new Trajeto(lojas->at(i), lojas->at(j)));
+			}
+		}
+	}
+}
+
 int main(int argc, const char* argv[])
 {
 	int qtdLojas = 0, kmMaxMoto = 0, qtdDrones = 0, custoKmMoto = 0, custoKmCaminhao = 0;
@@ -58,4 +72,7 @@ int main(int argc, const char* argv[])
 	vector<Loja*>* lojas = new std::vector<Loja*>;
 	CadastraLojas(lojas, qtdLojas, arquivo);
 
+	vector<Trajeto>* trajetos = new std::vector<Trajeto>;
+
+	CalcularTrajetos(lojas, trajetos);
 }
