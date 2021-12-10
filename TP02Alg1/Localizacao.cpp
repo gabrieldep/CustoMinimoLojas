@@ -7,7 +7,7 @@ Localizacao::Localizacao()
 	this->y = -1;
 }
 
-Localizacao::Localizacao(int x, int y)
+Localizacao::Localizacao(double x, double y)
 {
 	this->x = x;
 	this->y = y;
@@ -17,32 +17,30 @@ Localizacao::~Localizacao()
 {
 }
 
-int Localizacao::CalcularDistancia(Localizacao localizacao)
+double Localizacao::CalcularDistancia(Localizacao localizacao)
 {
-	double distanciaEixoX = fabs((double)localizacao.GetX() - (double)this->x);
-	double distanciaEixoY = fabs((double)localizacao.GetY() - (double)this->y);
-
-	int maiorLado = fmax(distanciaEixoX, distanciaEixoY);
-
-	return maiorLado - 1;
+	double xQuadrado = pow(localizacao.GetX() - this->x, 2);
+	double yQuadrado = pow(localizacao.GetY() - this->y, 2);
+	double teste = sqrt(xQuadrado + yQuadrado);
+	return teste;
 }
 
-void Localizacao::SetX(int x)
+void Localizacao::SetX(double x)
 {
 	this->x = x;
 }
 
-void Localizacao::SetY(int y)
+void Localizacao::SetY(double y)
 {
 	this->y = y;
 }
 
-int Localizacao::GetY()
+double Localizacao::GetY()
 {
 	return this->y;
 }
 
-int Localizacao::GetX()
+double Localizacao::GetX()
 {
 	return this->x;
 }

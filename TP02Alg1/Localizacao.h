@@ -2,16 +2,16 @@
 class Localizacao
 {
 private:
-	int x;
-	int y;
+	double x;
+	double y;
 public:
 	Localizacao();
-	Localizacao(int x, int y);
+	Localizacao(double x, double y);
 	~Localizacao();
-	int CalcularDistancia(Localizacao localizacao);
-	void SetX(int x);
-	void SetY(int y);
-	int GetY();
-	int GetX();
+	double CalcularDistancia(Localizacao localizacao);
+	void SetX(double x);
+	void SetY(double y);
+	double GetY();
+	double GetX();
 };
 

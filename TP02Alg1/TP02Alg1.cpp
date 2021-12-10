@@ -47,17 +47,27 @@ void CadastraLojas(vector<Loja*>* lojas, int qtdLojas, FILE* arquivo)
 	}
 }
 
-void CalcularTrajetos(vector<Loja*>* lojas, vector<Trajeto>* trajetos)
+void CalcularTrajetos(vector<Loja*>* lojas, vector<Trajeto*>* trajetos)
 {
 	for (size_t i = 0; i < lojas->size(); i++)
 	{
 		for (size_t j = i + 1; j < lojas->size(); j++)
 		{
 			if (i != j) {
-				trajetos->push_back(*new Trajeto(lojas->at(i), lojas->at(j)));
+				trajetos->push_back(new Trajeto(lojas->at(i), lojas->at(j)));
 			}
 		}
 	}
+}
+
+bool MaiorDistancia(Trajeto* t1, Trajeto* t2)
+{
+	return t1->GetDistancia() > t2->GetDistancia();
+}
+
+vector<Trajeto*> SortTrajetos(vector<Trajeto*> trajetos) {
+	sort(trajetos.begin(), trajetos.end(), MaiorDistancia);
+	return trajetos;
 }
 
 int main(int argc, const char* argv[])
@@ -72,7 +82,9 @@ int main(int argc, const char* argv[])
 	vector<Loja*>* lojas = new std::vector<Loja*>;
 	CadastraLojas(lojas, qtdLojas, arquivo);
 
-	vector<Trajeto>* trajetos = new std::vector<Trajeto>;
-
+	vector<Trajeto*>* trajetos = new std::vector<Trajeto*>;
 	CalcularTrajetos(lojas, trajetos);
+	*trajetos = SortTrajetos(*trajetos);
+	
+	fclose(arquivo);
 }
