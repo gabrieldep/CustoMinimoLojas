@@ -1,4 +1,5 @@
 #include "Loja.h"
+#include "Utils.h"
 #include <vector>
 #include <iostream>
 #include <algorithm>
@@ -47,6 +48,7 @@ void Loja::SetTrajetos(vector<Loja*>* lojas)
 			this->trajetos->push_back(*new Trajeto(this, lojas->at(i)));
 		}
 	}
+	Utils::SortTrajetos(this->trajetos);
 }
 
 void Loja::SetTrajetos(vector<Trajeto>* trajetos)
