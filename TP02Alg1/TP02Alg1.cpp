@@ -61,7 +61,7 @@ vector<Trajeto> SelecionaMelhorTrajeto(vector<Loja*>* lojas)
 		*trajeto = lojas->at(0)->GetTrajetos().front();
 		trajetos->push_back(*trajeto);
 	}
-	for (size_t i = 1; i < lojas->size(); i++)
+	for (size_t i = 1; i < lojas->size() - 1; i++)
 	{
 		vector<Trajeto> trajetosAuxiliar = lojas->at(i)->GetTrajetos();
 		for (size_t j = 0; j < trajetosAuxiliar.size(); j++)
