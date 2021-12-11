@@ -54,6 +54,7 @@ vector<Trajeto> SelecionaMelhorTrajeto(vector<Loja*>* lojas)
 	vector<Trajeto>* trajetos = new vector<Trajeto>;
 	vector<int>* inteiros = new vector<int>;
 	Trajeto* trajeto = new Trajeto();
+	int trajetoPonta = 0;
 	int lojaSelecionada = 0;
 
 	if (trajetos->size() == 0) {
@@ -66,7 +67,7 @@ vector<Trajeto> SelecionaMelhorTrajeto(vector<Loja*>* lojas)
 		for (size_t j = 0; j < trajetosAuxiliar.size(); j++)
 		{
 			*trajeto = trajetosAuxiliar.at(j);
-			if (!Utils::EstaNoVetor(trajetos, *trajeto)) {
+			if (!Utils::EstaNoVetor(trajetos, *trajeto, &trajetoPonta)) {
 				trajetos->push_back(*trajeto);
 				break;
 			}
