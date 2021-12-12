@@ -54,12 +54,14 @@ vector<Trajeto> SelecionaMelhorTrajeto(vector<Loja*>* lojas)
 	vector<Trajeto>* trajetos = new vector<Trajeto>;
 	vector<int>* inteiros = new vector<int>;
 	Trajeto* trajeto = new Trajeto();
-	int trajetoPonta = 0;
+	int trajetoPonta1 = 0;
+	int trajetoPonta2 = 0;
 	int lojaSelecionada = 0;
 
 	if (trajetos->size() == 0) {
-		*trajeto = lojas->at(0)->GetTrajetos().front();
+		*trajeto = lojas->at(trajetoPonta1)->GetTrajetos().front();
 		trajetos->push_back(*trajeto);
+		trajetoPonta2 = trajeto->GetLojaB().GetIdentificacao();
 	}
 	for (size_t i = 1; i < lojas->size() - 1; i++)
 	{
@@ -67,7 +69,7 @@ vector<Trajeto> SelecionaMelhorTrajeto(vector<Loja*>* lojas)
 		for (size_t j = 0; j < trajetosAuxiliar.size(); j++)
 		{
 			*trajeto = trajetosAuxiliar.at(j);
-			if (!Utils::EstaNoVetor(trajetos, *trajeto, &trajetoPonta)) {
+			if (!Utils::EstaNoVetor(trajetos, *trajeto, &trajetoPonta1, &trajetoPonta2)) {
 				trajetos->push_back(*trajeto);
 				break;
 			}
@@ -93,11 +95,32 @@ int main(int argc, const char* argv[])
 	}
 
 	vector<Trajeto>* trajetos = new std::vector<Trajeto>;
+	vector<Trajeto>* trajetosDrone = new std::vector<Trajeto>;
+	vector<Trajeto>* trajetosMoto = new std::vector<Trajeto>;
+	vector<Trajeto>* trajetosCaminhao = new std::vector<Trajeto>;
 
 	*trajetos = SelecionaMelhorTrajeto(lojas);
 	Utils::SortTrajetos(trajetos);
 
-
+	Trajeto t = trajetos->back();
+	trajetosDrone->push_back(t);
+	int trajetoA = t.GetLojaA().GetIdentificacao();
+	int trajetoB = t.GetLojaB().GetIdentificacao();
+	Trajeto adicionar = Trajeto();
+	for (size_t j = 0; j < qtdDrones - 1; j++)
+	{
+		for (size_t i = 1; i < trajetos->size(); i++)
+		{
+			Trajeto trajetoAux = trajetos->at(i);
+			int a = trajetoAux.GetLojaA().GetIdentificacao();
+			int b = trajetoAux.GetLojaB().GetIdentificacao();
+			if ((trajetoB == a && trajetoA != b) || (trajetoA == b && trajetoB != a)) {
+				adicionar = adicionar.GetDistancia() > trajetoAux.GetDistancia() ? adicionar : (trajetoAux);
+			}
+		}
+		t = adicionar;
+		trajetosDrone->push_back(adicionar);
+	}
 
 	fclose(arquivo);
 }

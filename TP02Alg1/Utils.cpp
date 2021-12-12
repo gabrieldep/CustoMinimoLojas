@@ -14,7 +14,7 @@ bool Utils::MaiorDistancia(Trajeto t1, Trajeto t2)
 	return t1.GetDistancia() < t2.GetDistancia();
 }
 
-bool Utils::EstaNoVetor(vector<Trajeto>* trajetos, Trajeto atual, int* ponta)
+bool Utils::EstaNoVetor(vector<Trajeto>* trajetos, Trajeto atual, int* ponta1, int* ponta2)
 {
 	for (size_t i = 0; i < trajetos->size(); i++)
 	{
@@ -24,14 +24,17 @@ bool Utils::EstaNoVetor(vector<Trajeto>* trajetos, Trajeto atual, int* ponta)
 		int trajetoAuxiliarA = trajetoAuxiliar.GetLojaA().GetIdentificacao();
 
 		if (trajetoAuxiliarA == atualB || trajetoAuxiliarA == atualA) {
-			if (atualB == *ponta) {
+			if (atualB == *ponta1 || atualB == *ponta2) {
 				for (size_t j = 0; j < trajetos->size(); j++)
 				{
 					if (atualA == trajetos->at(j).GetLojaB().GetIdentificacao()) {
 						return true;
 					}
 					else {
-						*ponta = atualA;
+						if (atualB == *ponta1)
+							*ponta1 = atualA;
+						else
+							*ponta2 = atualA;
 						return false;
 					}
 				}
