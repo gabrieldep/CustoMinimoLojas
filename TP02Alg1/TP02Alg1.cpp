@@ -78,5 +78,6 @@ int main(int argc, const char* argv[])
 	Utils::RemoveTrajetoDrone(trajetos, trajetosPorDrone);
 	double custoMoto = Utils::GetCustoPorMotos(trajetos, kmMaxMoto, custoKmMoto);
 	double custoCaminhao = Utils::GetCustoPorCaminhao(trajetos, kmMaxMoto, custoKmCaminhao);
+	cout << custoMoto << " " << custoCaminhao;
 	fclose(arquivo);
 }
