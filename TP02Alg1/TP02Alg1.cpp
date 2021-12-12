@@ -52,29 +52,30 @@ void CadastraLojas(vector<Loja*>* lojas, int qtdLojas, FILE* arquivo)
 vector<Trajeto> SelecionaMelhorTrajeto(vector<Loja*>* lojas)
 {
 	vector<Trajeto>* trajetos = new vector<Trajeto>;
-	vector<int>* inteiros = new vector<int>;
 	Trajeto* trajeto = new Trajeto();
-	int trajetoPonta1 = 0;
-	int trajetoPonta2 = 0;
-	int lojaSelecionada = 0;
-
+	vector<Ponto>* pontos = new vector<Ponto>;
+	Utils::CreateVetorPontos(lojas, pontos);
 	if (trajetos->size() == 0) {
-		*trajeto = lojas->at(trajetoPonta1)->GetTrajetos().front();
+		*trajeto = lojas->at(0)->GetTrajetos().front();
 		trajetos->push_back(*trajeto);
-		trajetoPonta2 = trajeto->GetLojaB().GetIdentificacao();
+		Utils::UpdatePontosPercorridos(pontos, trajeto->GetLojaA().GetIdentificacao(), trajeto->GetLojaB().GetIdentificacao());
 	}
-	for (size_t i = 1; i < lojas->size() - 1; i++)
+	int aux = trajeto->GetLojaB().GetIdentificacao();
+	while(trajetos->size() < lojas->size() - 1)
 	{
-		vector<Trajeto> trajetosAuxiliar = lojas->at(i)->GetTrajetos();
+		vector<Trajeto> trajetosAuxiliar = lojas->at(aux)->GetTrajetos();
 		for (size_t j = 0; j < trajetosAuxiliar.size(); j++)
 		{
 			*trajeto = trajetosAuxiliar.at(j);
-			if (!Utils::EstaNoVetor(trajetos, *trajeto, &trajetoPonta1, &trajetoPonta2)) {
+			if (!Utils::EstaNoVetor(trajetos, *trajeto, pontos) && pontos->at(aux).GetQuantidade() < 2) {
 				trajetos->push_back(*trajeto);
+				aux = trajeto->GetLojaB().GetIdentificacao();
+				Utils::UpdatePontosPercorridos(pontos, trajeto->GetLojaA().GetIdentificacao(), trajeto->GetLojaB().GetIdentificacao());
 				break;
 			}
 		}
 	}
+	trajetos->push_back(Utils::GetTrajetoLigarPontas(pontos, *lojas));
 	return *trajetos;
 }
 

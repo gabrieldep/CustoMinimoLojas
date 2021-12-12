@@ -141,6 +141,7 @@
   <ItemGroup>
     <ClCompile Include="Localizacao.cpp" />
     <ClCompile Include="Loja.cpp" />
+    <ClCompile Include="Ponto.cpp" />
     <ClCompile Include="TP02Alg1.cpp" />
     <ClCompile Include="Trajeto.cpp" />
     <ClCompile Include="Utils.cpp" />
@@ -148,6 +149,7 @@
   <ItemGroup>
     <ClInclude Include="Localizacao.h" />
     <ClInclude Include="Loja.h" />
+    <ClInclude Include="Ponto.h" />
     <ClInclude Include="resource.h" />
     <ClInclude Include="Trajeto.h" />
     <ClInclude Include="Utils.h" />

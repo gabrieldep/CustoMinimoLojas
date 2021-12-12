@@ -1,5 +1,6 @@
 #include "Utils.h"
 #include "Trajeto.h"
+#include "Ponto.h"
 #include <vector>
 #include <algorithm>
 
@@ -14,35 +15,10 @@ bool Utils::MaiorDistancia(Trajeto t1, Trajeto t2)
 	return t1.GetDistancia() < t2.GetDistancia();
 }
 
-bool Utils::EstaNoVetor(vector<Trajeto>* trajetos, Trajeto atual, int* ponta1, int* ponta2)
+bool Utils::EstaNoVetor(vector<Trajeto>* trajetos, Trajeto atual, vector<Ponto>* pontos)
 {
-	for (size_t i = 0; i < trajetos->size(); i++)
-	{
-		Trajeto trajetoAuxiliar = trajetos->at(i);
-		int atualB = atual.GetLojaB().GetIdentificacao();
-		int atualA = atual.GetLojaA().GetIdentificacao();
-		int trajetoAuxiliarA = trajetoAuxiliar.GetLojaA().GetIdentificacao();
-
-		if (trajetoAuxiliarA == atualB || trajetoAuxiliarA == atualA) {
-			if (atualB == *ponta1 || atualB == *ponta2) {
-				for (size_t j = 0; j < trajetos->size(); j++)
-				{
-					if (atualA == trajetos->at(j).GetLojaB().GetIdentificacao()) {
-						return true;
-					}
-					else {
-						if (atualB == *ponta1)
-							*ponta1 = atualA;
-						else
-							*ponta2 = atualA;
-						return false;
-					}
-				}
-			}
-			return true;
-		}
-	}
-	return false;
+	int atualB = atual.GetLojaB().GetIdentificacao();
+	return pontos->at(atualB).GetQuantidade() > 0;
 }
 
 void Utils::CalcularTodosTrajetos(vector<Loja*>* lojas, vector<Trajeto>* trajetos)
@@ -56,4 +32,36 @@ void Utils::CalcularTodosTrajetos(vector<Loja*>* lojas, vector<Trajeto>* trajeto
 			}
 		}
 	}
+}
+
+void Utils::UpdatePontosPercorridos(vector<Ponto>* pontos, int ponto1, int ponto2)
+{
+	pontos->at(ponto1).SomaQuantidade(1);
+	pontos->at(ponto2).SomaQuantidade(1);
+}
+
+void Utils::CreateVetorPontos(vector<Loja*>* lojas, vector<Ponto>* pontos)
+{
+	for (size_t i = 0; i < lojas->size(); i++)
+	{
+		pontos->push_back(*new Ponto(i, 0));
+	}
+}
+
+Trajeto Utils::GetTrajetoLigarPontas(vector<Ponto>* pontos, vector<Loja*> lojas)
+{
+	int a = -1;
+	int b = -1;
+	for (size_t i = 0; i < pontos->size(); i++)
+	{
+		if (pontos->at(i).GetQuantidade() == 1) {
+			if (a == -1)
+				a = i;
+			else {
+				b = i;
+				break;
+			}
+		}
+	}
+	return *new Trajeto(lojas.at(a), lojas.at(b));
 }
