@@ -21,6 +21,46 @@ bool Utils::EstaNoVetor(vector<Trajeto>* trajetos, Trajeto atual, vector<Ponto>*
 	return pontos->at(atualB).GetQuantidade() > 0;
 }
 
+void Utils::RemoveMaiorTrajeto(vector<Trajeto>* trajetos)
+{
+	SortTrajetos(trajetos);
+	trajetos->pop_back();
+}
+
+vector<Trajeto> Utils::SelecionaMelhorTrajeto(vector<Loja*>* lojas)
+{
+	vector<Trajeto>* trajetos = new vector<Trajeto>;
+	Trajeto* trajeto = new Trajeto();
+	vector<Ponto>* pontos = new vector<Ponto>;
+	CreateVetorPontos(lojas, pontos);
+
+	*trajeto = lojas->at(0)->GetTrajetos().front();
+	AdicionaTrajetoAVetor(trajetos, trajeto, pontos);
+
+	int aux = trajeto->GetLojaB().GetIdentificacao();
+	while (trajetos->size() < lojas->size() - 1)
+	{
+		vector<Trajeto> trajetosAuxiliar = lojas->at(aux)->GetTrajetos();
+		for (size_t j = 0; j < trajetosAuxiliar.size(); j++)
+		{
+			*trajeto = trajetosAuxiliar.at(j);
+			if (!EstaNoVetor(trajetos, *trajeto, pontos) && pontos->at(aux).GetQuantidade() < 2) {
+				aux = trajeto->GetLojaB().GetIdentificacao();
+				AdicionaTrajetoAVetor(trajetos, trajeto, pontos);
+				break;
+			}
+		}
+	}
+	trajetos->push_back(Utils::GetTrajetoLigarPontas(pontos, *lojas));
+	return *trajetos;
+}
+
+void Utils::AdicionaTrajetoAVetor(vector<Trajeto>* trajetos, Trajeto* trajeto, vector<Ponto>* pontos)
+{
+	trajetos->push_back(*trajeto);
+	UpdatePontosPercorridos(pontos, trajeto->GetLojaA().GetIdentificacao(), trajeto->GetLojaB().GetIdentificacao());
+}
+
 void Utils::CalcularTodosTrajetos(vector<Loja*>* lojas, vector<Trajeto>* trajetos)
 {
 	for (size_t i = 0; i < lojas->size(); i++)
