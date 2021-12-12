@@ -58,41 +58,25 @@ int main(int argc, const char* argv[])
 	result = fgets(Linha, 100, arquivo);
 	SetValoresEntrada(&qtdLojas, &kmMaxMoto, &qtdDrones, &custoKmMoto, &custoKmCaminhao, result);
 
-	vector<Loja*>* lojas = new std::vector<Loja*>;
+	vector<Loja*>* lojas = new vector<Loja*>;
 	CadastraLojas(lojas, qtdLojas, arquivo);
 	for (size_t i = 0; i < qtdLojas; i++)
 	{
 		lojas->at(i)->SetTrajetos(lojas);
 	}
+	vector<Ponto>* pontos = new vector<Ponto>;
+	Utils::CreateVetorPontos(lojas, pontos);
 
-	vector<Trajeto>* trajetos = new std::vector<Trajeto>;
-	vector<Trajeto>* trajetosDrone = new std::vector<Trajeto>;
-	vector<Trajeto>* trajetosMoto = new std::vector<Trajeto>;
-	vector<Trajeto>* trajetosCaminhao = new std::vector<Trajeto>;
+	vector<Trajeto>* trajetos = new vector<Trajeto>;
 
-	*trajetos = Utils::SelecionaMelhorTrajeto(lojas);
+	*trajetos = Utils::SelecionaMelhorTrajeto(lojas, pontos);
 	Utils::SortTrajetos(trajetos);
-	Utils::RemoveMaiorTrajeto(trajetos);
+	Utils::RemoveMaiorTrajeto(trajetos, pontos);
+	Utils::OrdenaCaminho(trajetos, pontos);
+	vector<Trajeto> trajetosPorDrone = Utils::GetTrajetosPorDrone(trajetos, qtdDrones);
 
-	Trajeto t = trajetos->back();
-	trajetosDrone->push_back(t);
-	int trajetoA = t.GetLojaA().GetIdentificacao();
-	int trajetoB = t.GetLojaB().GetIdentificacao();
-	Trajeto adicionar = Trajeto();
-	for (size_t j = 0; j < qtdDrones - 1; j++)
-	{
-		for (size_t i = 1; i < trajetos->size(); i++)
-		{
-			Trajeto trajetoAux = trajetos->at(i);
-			int a = trajetoAux.GetLojaA().GetIdentificacao();
-			int b = trajetoAux.GetLojaB().GetIdentificacao();
-			if ((trajetoB == a && trajetoA != b) || (trajetoA == b && trajetoB != a)) {
-				adicionar = adicionar.GetDistancia() > trajetoAux.GetDistancia() ? adicionar : (trajetoAux);
-			}
-		}
-		t = adicionar;
-		trajetosDrone->push_back(adicionar);
-	}
-
+	Utils::RemoveTrajetoDrone(trajetos, trajetosPorDrone);
+	double custoMoto = Utils::GetCustoPorMotos(trajetos, kmMaxMoto, custoKmMoto);
+	double custoCaminhao = Utils::GetCustoPorCaminhao(trajetos, kmMaxMoto, custoKmCaminhao);
 	fclose(arquivo);
 }

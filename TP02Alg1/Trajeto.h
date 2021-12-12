@@ -21,5 +21,6 @@ public:
 	void SetLojaB(Loja b);
 	Loja GetLojaA();
 	Loja GetLojaB();
+	bool Equals(Trajeto t2);
 };
 

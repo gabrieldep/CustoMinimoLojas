@@ -52,3 +52,13 @@ Loja Trajeto::GetLojaB()
 {
     return *b;
 }
+
+bool Trajeto::Equals(Trajeto t2)
+{
+    int atualA = this->a->GetIdentificacao();
+    int atualB = this->b->GetIdentificacao();
+    int t2A = t2.GetLojaA().GetIdentificacao();
+    int t2B = t2.GetLojaB().GetIdentificacao();
+
+    return (atualA == t2A && atualB == t2B) || (atualB == t2A && atualA == t2B);
+}
