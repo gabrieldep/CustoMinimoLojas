@@ -1,4 +1,6 @@
 #pragma once
+#include "Loja.h"
+#include <vector>
 class Ponto
 {
 private:
@@ -12,5 +14,6 @@ public:
 	void SomaQuantidade(int quantidade);
 	int GetId();
 	int GetQuantidade();
+	static vector<Ponto> CreateVetorPontos(vector<Loja*>* lojas);
 };
 

@@ -99,21 +99,6 @@ void Utils::UpdatePontosPercorridos(vector<Ponto>* pontos, Trajeto trajeto)
 }
 
 /// <summary>
-/// Cria a lista de pontos para fazer o controle da quantidade de vertices que ja estão na árvore.
-/// </summary>
-/// <param name="lojas">Lista com as lojas para fazer o controle</param>
-/// <returns></returns>
-vector<Ponto> Utils::CreateVetorPontos(vector<Loja*>* lojas)
-{
-	vector<Ponto>* pontos = new vector<Ponto>;
-	for (size_t i = 0; i < lojas->size(); i++)
-	{
-		pontos->push_back(*new Ponto(i, 0));
-	}
-	return *pontos;
-}
-
-/// <summary>
 /// Get em todos os trajetos que serão realizados por drone.
 /// </summary>
 /// <param name="trajetos">Lista com os trajetos a serem percorridos.</param>

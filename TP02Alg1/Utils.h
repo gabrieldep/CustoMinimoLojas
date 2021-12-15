@@ -14,7 +14,6 @@ public:
 	static vector<Trajeto> SelecionaMelhorTrajeto(vector<Loja*>* lojas, vector<Ponto>* pontos);
 	static void AdicionaTrajetoAVetor(vector<Trajeto>* trajetos, Trajeto* trajeto, vector<Ponto>* pontos);
 	static void UpdatePontosPercorridos(vector<Ponto>* pontos, Trajeto trajeto);
-	static vector<Ponto> CreateVetorPontos(vector<Loja*>* lojas);
 	static vector<Trajeto> GetTrajetosPorDrone(vector<Trajeto> trajetos, int qtdDrones);
 	static double GetCustoPorMotos(vector<Trajeto>* trajetos, int kmMaxMoto, int custoKmMoto);
 	static double GetCustoPorCaminhao(vector<Trajeto>* trajetos, int kmMaxMoto, int custoKmCaminhao);
