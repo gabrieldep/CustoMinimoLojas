@@ -71,13 +71,15 @@ void Utils::SelecionaMelhorTrajeto()
 				trajetos->at(j).GetLojaA()->RemoveUltimoTrajeto();
 				a = *a.GetProximoTrajeto(trajetos->at(j).GetLojaA()->GetTrajetos());
 			}
+			trajetoMinimo = a.GetDistancia() < trajetoMinimo.GetDistancia() ? a : trajetoMinimo;
 			while (pontos->at(b.GetLojaB()->GetIdentificacao()).GetQuantidade() > 0) {
 				trajetos->at(j).GetLojaB()->RemoveUltimoTrajeto();
 				b = *b.GetProximoTrajeto(trajetos->at(j).GetLojaB()->GetTrajetos());
 			}
-			trajetoMinimo = a.GetDistancia() < b.GetDistancia() ? a : b;
+			trajetoMinimo = b.GetDistancia() < trajetoMinimo.GetDistancia() ? b : trajetoMinimo;
 		}
 		AdicionaTrajetoAVetor(trajetos, &trajetoMinimo, pontos);
+		trajetoMinimo = Trajeto();
 	}
 }
 
