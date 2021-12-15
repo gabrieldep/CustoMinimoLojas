@@ -4,41 +4,38 @@
 #include <vector>
 #include <algorithm>
 
+/// <summary>
+/// Sort trajetos em ordem crescente ou descresente
+/// </summary>
+/// <param name="trajetos">Trajetos a serem ordenados.</param>
+/// <param name="crescente">Bool para saber se a ordenação é em ordem crescente ou decrescente.</param>
+/// <returns></returns>
 vector<Trajeto> Utils::SortTrajetos(vector<Trajeto>* trajetos, bool crescente)
 {
 	sort(trajetos->begin(), trajetos->end(), crescente ? MaiorDistancia : MenorDistancia);
 	return *trajetos;
 }
 
+/// <summary>
+/// Metodo auxiliar no Sort de trajetos.
+/// </summary>
+/// <param name="t1">Trajeto1 a ser comparado.</param>
+/// <param name="t2">Trajeto2 a ser comparado.</param>
+/// <returns></returns>
 bool Utils::MaiorDistancia(Trajeto t1, Trajeto t2)
 {
 	return t1.GetDistancia() > t2.GetDistancia();
 }
 
+/// <summary>
+/// Metodo auxiliar no Sort de trajetos.
+/// </summary>
+/// <param name="t1">Trajeto1 a ser comparado.</param>
+/// <param name="t2">Trajeto2 a ser comparado.</param>
+/// <returns></returns>
 bool Utils::MenorDistancia(Trajeto t1, Trajeto t2)
 {
 	return t1.GetDistancia() < t2.GetDistancia();
-}
-
-
-bool Utils::EstaNoVetor(vector<Trajeto> atual, vector<Ponto>* pontos)
-{
-	for (size_t i = 0; i < atual.size(); i++)
-	{
-		int atualB = atual.at(i).GetLojaB().GetIdentificacao();
-		if (pontos->at(atualB).GetQuantidade() == 0)
-			return true;
-	}
-	return false;
-}
-
-void Utils::RemoveMaiorTrajeto(vector<Trajeto>* trajetos, vector<Ponto>* pontos)
-{
-	SortTrajetos(trajetos, true);
-	Trajeto trajetoAux = trajetos->back();
-	pontos->at(trajetoAux.GetLojaA().GetIdentificacao()).SomaQuantidade(-1);
-	pontos->at(trajetoAux.GetLojaB().GetIdentificacao()).SomaQuantidade(-1);
-	trajetos->pop_back();
 }
 
 /// <summary>
