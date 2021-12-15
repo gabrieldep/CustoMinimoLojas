@@ -126,6 +126,8 @@ Trajeto Utils::GetTrajetoLigarPontas(vector<Ponto>* pontos, vector<Loja*> lojas)
 
 vector<Trajeto> Utils::GetTrajetosPorDrone(vector<Trajeto> trajetos, int qtdDrones)
 {
+	Utils::SortTrajetos(&trajetos, false);
+
 	vector<Trajeto> trajetosDrone = vector<Trajeto>();
 	for (size_t i = 0; i < qtdDrones - 1; i++)
 	{
@@ -168,6 +170,11 @@ double Utils::SomarTamanhoTrajetos(vector<Trajeto> trajetos)
 	return aux;
 }
 
+/// <summary>
+/// Remove os trajetos que serão feitos por drone do cálculo do custo
+/// </summary>
+/// <param name="trajetos">Lista com os trajetos a serem percorridos.</param>
+/// <param name="qtdDrones">Quantidade de drones disponíveis</param>
 void Utils::RemoveTrajetoDrone(vector<Trajeto>* trajetos, int qtdDrones)
 {
 	vector<Trajeto> trajetosPorDrone = vector<Trajeto>();

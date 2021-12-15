@@ -82,8 +82,9 @@ int main(int argc, const char* argv[])
 
 	vector<Ponto> pontos = Utils::CreateVetorPontos(lojas);
  	vector<Trajeto> trajetos = Utils::SelecionaMelhorTrajeto(lojas, &pontos, &todosTrajetos->back());
-	Utils::SortTrajetos(&trajetos, false);
+
 	Utils::RemoveTrajetoDrone(&trajetos, qtdDrones);
+
 	double custoMoto = Utils::GetCustoPorMotos(&trajetos, kmMaxMoto, custoKmMoto);
 	double custoCaminhao = Utils::GetCustoPorCaminhao(&trajetos, kmMaxMoto, custoKmCaminhao);
 	printf("%.3f %.3f", custoMoto, custoCaminhao);
