@@ -124,6 +124,12 @@ Trajeto Utils::GetTrajetoLigarPontas(vector<Ponto>* pontos, vector<Loja*> lojas)
 	return *new Trajeto(lojas.at(a), lojas.at(b));
 }
 
+/// <summary>
+/// Get em todos os trajetos que serão realizados por drone.
+/// </summary>
+/// <param name="trajetos">Lista com os trajetos a serem percorridos.</param>
+/// <param name="qtdDrones">Quantidade de drones disponiveis para fazer o trajeto.</param>
+/// <returns>Lista com os trajetos que serão realizados por drone.</returns>
 vector<Trajeto> Utils::GetTrajetosPorDrone(vector<Trajeto> trajetos, int qtdDrones)
 {
 	Utils::SortTrajetos(&trajetos, false);
@@ -138,6 +144,13 @@ vector<Trajeto> Utils::GetTrajetosPorDrone(vector<Trajeto> trajetos, int qtdDron
 	return trajetosDrone;
 }
 
+/// <summary>
+/// Faz o cálculo de quanto será gasto com motor para realizar o trajeto.
+/// </summary>
+/// <param name="trajetos">Lista com os trajetos a serem percorridos.</param>
+/// <param name="kmMaxMoto">Quilometragem maxima que um trajeto pode ser feito por moto.</param>
+/// <param name="custoKmCaminhao">Custo por quilometro percorrido de moto.</param>
+/// <returns>Valor total gasto com motos</returns>
 double Utils::GetCustoPorMotos(vector<Trajeto>* trajetos, int kmMaxMoto, int custoKmMoto)
 {
 	double custoTotalMoto = 0.0;
@@ -149,6 +162,13 @@ double Utils::GetCustoPorMotos(vector<Trajeto>* trajetos, int kmMaxMoto, int cus
 	return custoTotalMoto;
 }
 
+/// <summary>
+/// Faz o cálculo de quanto será gasto com caminhões para realizar o trajeto.
+/// </summary>
+/// <param name="trajetos">Lista com os trajetos a serem percorridos.</param>
+/// <param name="kmMaxMoto">Quilometragem maxima que um trajeto pode ser feito por moto.</param>
+/// <param name="custoKmCaminhao">Custo por quilometro percorrido de caminhão.</param>
+/// <returns>Valor total gasto com caminhões</returns>
 double Utils::GetCustoPorCaminhao(vector<Trajeto>* trajetos, int kmMaxMoto, int custoKmCaminhao)
 {
 	double custoTotalCaminhao = 0.0;
@@ -158,16 +178,6 @@ double Utils::GetCustoPorCaminhao(vector<Trajeto>* trajetos, int kmMaxMoto, int 
 			custoTotalCaminhao += trajetos->at(i).GetDistancia() * custoKmCaminhao;
 	}
 	return custoTotalCaminhao;
-}
-
-double Utils::SomarTamanhoTrajetos(vector<Trajeto> trajetos)
-{
-	double aux = 0.0;
-	for (size_t i = 0; i < trajetos.size(); i++)
-	{
-		aux += trajetos.at(i).GetDistancia();
-	}
-	return aux;
 }
 
 /// <summary>
@@ -193,6 +203,10 @@ void Utils::RemoveTrajetoDrone(vector<Trajeto>* trajetos, int qtdDrones)
 	}
 }
 
+/// <summary>
+/// Setta os trajetos e suas distancias a partir de cada loja.
+/// </summary>
+/// <param name="lojas">Lista de lojas para fazer o cálculo de distancia.</param>
 void Utils::SetarTrajetosPorLoja(vector<Loja*> lojas)
 {
 	for (size_t i = 0; i < lojas.size(); i++)
