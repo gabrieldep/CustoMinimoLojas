@@ -18,6 +18,5 @@ public:
 	static double GetCustoPorMotos(vector<Trajeto>* trajetos, int kmMaxMoto, int custoKmMoto);
 	static double GetCustoPorCaminhao(vector<Trajeto>* trajetos, int kmMaxMoto, int custoKmCaminhao);
 	static void RemoveTrajetoDrone(vector<Trajeto>* trajetos, int qtdDrones);
-	static void SetarTrajetosPorLoja(vector<Loja*> lojas);
 };
 

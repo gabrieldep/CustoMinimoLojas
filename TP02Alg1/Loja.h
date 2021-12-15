@@ -25,6 +25,6 @@ public:
 	Localizacao GetLocalizacao();
 	vector<Trajeto> GetTrajetos();
 	void RemoveUltimoTrajeto();
-
+	static void SetarTrajetosPorLoja(vector<Loja*> lojas);
 };
 

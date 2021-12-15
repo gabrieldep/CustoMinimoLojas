@@ -76,7 +76,7 @@ int main(int argc, const char* argv[])
 
 	vector<Loja*>* lojas = new vector<Loja*>;
 	CadastraLojas(lojas, qtdLojas, arquivo);
-	Utils::SetarTrajetosPorLoja(*lojas);
+	Loja::SetarTrajetosPorLoja(*lojas);
 
 	vector<Ponto> pontos = Ponto::CreateVetorPontos(lojas);
  	vector<Trajeto> trajetos = Utils::SelecionaMelhorTrajeto(lojas, &pontos);

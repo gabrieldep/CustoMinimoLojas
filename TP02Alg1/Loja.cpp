@@ -77,3 +77,15 @@ void Loja::RemoveUltimoTrajeto()
 	if (this->trajetos->size() > 0)
 		this->trajetos->pop_back();
 }
+
+/// <summary>
+/// Setta os trajetos e suas distancias a partir de cada loja.
+/// </summary>
+/// <param name="lojas">Lista de lojas para fazer o cálculo de distancia.</param>
+void Loja::SetarTrajetosPorLoja(vector<Loja*> lojas)
+{
+	for (size_t i = 0; i < lojas.size(); i++)
+	{
+		lojas.at(i)->SetTrajetos(&lojas);
+	}
+}
