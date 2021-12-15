@@ -30,12 +30,13 @@ void Utils::RemoveMaiorTrajeto(vector<Trajeto>* trajetos, vector<Ponto>* pontos)
 	trajetos->pop_back();
 }
 
-vector<Trajeto> Utils::SelecionaMelhorTrajeto(vector<Loja*>* lojas, vector<Ponto>* pontos)
+vector<Trajeto> Utils::SelecionaMelhorTrajeto(vector<Loja*>* lojas, vector<Ponto>* pontos, Trajeto* menorTrajeto)
 {
 	vector<Trajeto>* trajetos = new vector<Trajeto>;
 	Trajeto* trajeto = new Trajeto();
+	int pontoInicial = menorTrajeto->GetLojaA().GetIdentificacao();
 
-	*trajeto = lojas->at(0)->GetTrajetos().front();
+	*trajeto = lojas->at(pontoInicial)->GetTrajetos().front();
 	AdicionaTrajetoAVetor(trajetos, trajeto, pontos);
 
 	int aux = trajeto->GetLojaB().GetIdentificacao();
@@ -83,12 +84,14 @@ void Utils::UpdatePontosPercorridos(vector<Ponto>* pontos, int ponto1, int ponto
 	pontos->at(ponto2).SomaQuantidade(1);
 }
 
-void Utils::CreateVetorPontos(vector<Loja*>* lojas, vector<Ponto>* pontos)
+vector<Ponto> Utils::CreateVetorPontos(vector<Loja*>* lojas)
 {
+	vector<Ponto>* pontos = new vector<Ponto>;
 	for (size_t i = 0; i < lojas->size(); i++)
 	{
 		pontos->push_back(*new Ponto(i, 0));
 	}
+	return *pontos;
 }
 
 Trajeto Utils::GetTrajetoLigarPontas(vector<Ponto>* pontos, vector<Loja*> lojas)
@@ -211,8 +214,11 @@ double Utils::SomarTamanhoTrajetos(vector<Trajeto> trajetos)
 	return aux;
 }
 
-void Utils::RemoveTrajetoDrone(vector<Trajeto>* trajetos, vector<Trajeto> trajetosPorDrone)
+void Utils::RemoveTrajetoDrone(vector<Trajeto>* trajetos, int qtdDrones)
 {
+	vector<Trajeto> trajetosPorDrone = vector<Trajeto>();
+	trajetosPorDrone = GetTrajetosPorDrone(trajetos, qtdDrones);
+
 	for (size_t i = 0; i < trajetos->size(); i++)
 	{
 		for (size_t j = 0; j < trajetosPorDrone.size(); j++)
