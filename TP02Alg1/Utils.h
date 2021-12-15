@@ -16,13 +16,11 @@ public:
 	static vector<Trajeto> SelecionaMelhorTrajeto(vector<Loja*>* lojas, vector<Ponto>* pontos, Trajeto* menorTrajeto);
 	static void AdicionaTrajetoAVetor(vector<Trajeto>* trajetos, Trajeto* trajeto, vector<Ponto>* pontos);
 	static void CalcularTodosTrajetos(vector<Loja*>* lojas, vector<Trajeto>* trajetos);
-	static void UpdatePontosPercorridos(vector<Ponto>* pontos, int ponto1, int ponto2);
+	static void UpdatePontosPercorridos(vector<Ponto>* pontos, Trajeto trajeto);
 	static vector<Ponto> CreateVetorPontos(vector<Loja*>* lojas);
-	static Trajeto GetTrajetoLigarPontas(vector<Ponto>* pontos, vector<Loja*> lojas);
 	static vector<Trajeto> GetTrajetosPorDrone(vector<Trajeto> trajetos, int qtdDrones);
 	static double GetCustoPorMotos(vector<Trajeto>* trajetos, int kmMaxMoto, int custoKmMoto);
 	static double GetCustoPorCaminhao(vector<Trajeto>* trajetos, int kmMaxMoto, int custoKmCaminhao);
-	static double SomarTamanhoTrajetos(vector<Trajeto> trajetos);
 	static void RemoveTrajetoDrone(vector<Trajeto>* trajetos, int qtdDrones);
 	static void SetarTrajetosPorLoja(vector<Loja*> lojas);
 };

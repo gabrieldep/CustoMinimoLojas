@@ -41,6 +41,13 @@ void Utils::RemoveMaiorTrajeto(vector<Trajeto>* trajetos, vector<Ponto>* pontos)
 	trajetos->pop_back();
 }
 
+/// <summary>
+/// Algoritimo para calcular a árvore mínima geradora.
+/// </summary>
+/// <param name="lojas">Lijas que representam os vértices de cada grafo.</param>
+/// <param name="pontos">Lista de pontos para fazer o controle.</param>
+/// <param name="menorTrajeto">Menor vértice do grafo- Ponto de partida da árvore minima geradora</param>
+/// <returns>Lista com os trajetos que formam a ávore mínima geradora.</returns>
 vector<Trajeto> Utils::SelecionaMelhorTrajeto(vector<Loja*>* lojas, vector<Ponto>* pontos, Trajeto* menorTrajeto)
 {
 	vector<Trajeto>* trajetos = new vector<Trajeto>;
@@ -71,12 +78,23 @@ vector<Trajeto> Utils::SelecionaMelhorTrajeto(vector<Loja*>* lojas, vector<Ponto
 	return *trajetos;
 }
 
+/// <summary>
+/// Adiciona determinado trajeto a uma lista de trajetos e faz o controle na lista de pontos.
+/// </summary>
+/// <param name="trajetos">Lista de trajetos onde o trajeto sera adicionado.</param>
+/// <param name="trajeto">Trajeto a ser adicionado.</param>
+/// <param name="pontos">Lista de pontos para fazer o controle.</param>
 void Utils::AdicionaTrajetoAVetor(vector<Trajeto>* trajetos, Trajeto* trajeto, vector<Ponto>* pontos)
 {
 	trajetos->push_back(*trajeto);
-	UpdatePontosPercorridos(pontos, trajeto->GetLojaA().GetIdentificacao(), trajeto->GetLojaB().GetIdentificacao());
+	UpdatePontosPercorridos(pontos, *trajeto);
 }
 
+/// <summary>
+/// Calcula todas as possibilidades de caminho entre todas as lojas- sem repetição [(n * (n -1)) / 2!]
+/// </summary>
+/// <param name="lojas"></param>
+/// <param name="trajetos"></param>
 void Utils::CalcularTodosTrajetos(vector<Loja*>* lojas, vector<Trajeto>* trajetos)
 {
 	for (size_t i = 0; i < lojas->size(); i++)
@@ -90,12 +108,22 @@ void Utils::CalcularTodosTrajetos(vector<Loja*>* lojas, vector<Trajeto>* trajeto
 	}
 }
 
-void Utils::UpdatePontosPercorridos(vector<Ponto>* pontos, int ponto1, int ponto2)
+/// <summary>
+/// Adiciona vertices de um trajeto à lista de controle.
+/// </summary>
+/// <param name="pontos">Lista de controle.</param>
+/// <param name="trajeto">Trajeto para adicionar os vertices.</param>
+void Utils::UpdatePontosPercorridos(vector<Ponto>* pontos, Trajeto trajeto)
 {
-	pontos->at(ponto1).SomaQuantidade(1);
-	pontos->at(ponto2).SomaQuantidade(1);
+	pontos->at(trajeto.GetLojaA().GetIdentificacao()).SomaQuantidade(1);
+	pontos->at(trajeto.GetLojaB().GetIdentificacao()).SomaQuantidade(1);
 }
 
+/// <summary>
+/// Cria a lista de pontos para fazer o controle da quantidade de vertices que ja estão na árvore.
+/// </summary>
+/// <param name="lojas">Lista com as lojas para fazer o controle</param>
+/// <returns></returns>
 vector<Ponto> Utils::CreateVetorPontos(vector<Loja*>* lojas)
 {
 	vector<Ponto>* pontos = new vector<Ponto>;
@@ -104,24 +132,6 @@ vector<Ponto> Utils::CreateVetorPontos(vector<Loja*>* lojas)
 		pontos->push_back(*new Ponto(i, 0));
 	}
 	return *pontos;
-}
-
-Trajeto Utils::GetTrajetoLigarPontas(vector<Ponto>* pontos, vector<Loja*> lojas)
-{
-	int a = -1;
-	int b = -1;
-	for (size_t i = 0; i < pontos->size(); i++)
-	{
-		if (pontos->at(i).GetQuantidade() == 1) {
-			if (a == -1)
-				a = i;
-			else {
-				b = i;
-				break;
-			}
-		}
-	}
-	return *new Trajeto(lojas.at(a), lojas.at(b));
 }
 
 /// <summary>
