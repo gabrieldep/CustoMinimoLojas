@@ -39,6 +39,10 @@ int Loja::GetIdentificacao()
 	return this->identificacao;
 }
 
+/// <summary>
+/// Calcula a distancia dessa loja com todas as outras lojas e seta as distancias em ordem crescente.
+/// </summary>
+/// <param name="lojas">Lojas para calcular a distancia.</param>
 void Loja::SetTrajetos(vector<Loja*>* lojas)
 {
 	for (size_t i = 0; i < lojas->size(); i++)
@@ -65,6 +69,9 @@ vector<Trajeto> Loja::GetTrajetos()
 	return *this->trajetos;
 }
 
+/// <summary>
+/// Remove ultimo trajeto da lista de trajetos que saem desta loja.
+/// </summary>
 void Loja::RemoveUltimoTrajeto()
 {
 	if (this->trajetos->size() > 0)
