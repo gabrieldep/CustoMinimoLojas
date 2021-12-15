@@ -24,5 +24,7 @@ public:
 	void SetTrajetos(vector<Trajeto>* lojas);
 	Localizacao GetLocalizacao();
 	vector<Trajeto> GetTrajetos();
+	void RemoveUltimoTrajeto();
+
 };
 

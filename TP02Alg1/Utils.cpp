@@ -12,13 +12,18 @@ vector<Trajeto> Utils::SortTrajetos(vector<Trajeto>* trajetos)
 
 bool Utils::MaiorDistancia(Trajeto t1, Trajeto t2)
 {
-	return t1.GetDistancia() < t2.GetDistancia();
+	return t1.GetDistancia() > t2.GetDistancia();
 }
 
-bool Utils::EstaNoVetor(vector<Trajeto>* trajetos, Trajeto atual, vector<Ponto>* pontos)
+bool Utils::EstaNoVetor(vector<Trajeto> atual, vector<Ponto>* pontos)
 {
-	int atualB = atual.GetLojaB().GetIdentificacao();
-	return pontos->at(atualB).GetQuantidade() > 0;
+	for (size_t i = 0; i < atual.size(); i++)
+	{
+		int atualB = atual.at(i).GetLojaB().GetIdentificacao();
+		if (pontos->at(atualB).GetQuantidade() == 0)
+			return true;
+	}
+	return false;
 }
 
 void Utils::RemoveMaiorTrajeto(vector<Trajeto>* trajetos, vector<Ponto>* pontos)
@@ -34,27 +39,31 @@ vector<Trajeto> Utils::SelecionaMelhorTrajeto(vector<Loja*>* lojas, vector<Ponto
 {
 	vector<Trajeto>* trajetos = new vector<Trajeto>;
 	Trajeto* trajeto = new Trajeto();
-	int pontoInicial = menorTrajeto->GetLojaA().GetIdentificacao();
+	Trajeto trajetoMinimo = Trajeto();
 
-	*trajeto = lojas->at(pontoInicial)->GetTrajetos().front();
-	AdicionaTrajetoAVetor(trajetos, trajeto, pontos);
+	AdicionaTrajetoAVetor(trajetos, menorTrajeto, pontos);
 
-	int aux = trajeto->GetLojaB().GetIdentificacao();
 	while (trajetos->size() < lojas->size() - 1)
 	{
-		vector<Trajeto> trajetosAuxiliar = lojas->at(aux)->GetTrajetos();
-		for (size_t j = 0; j < trajetosAuxiliar.size(); j++)
+		for (size_t j = 0; j < trajetos->size(); j++)
 		{
-			*trajeto = trajetosAuxiliar.at(j);
-			if (!EstaNoVetor(trajetos, *trajeto, pontos) && pontos->at(aux).GetQuantidade() < 2) {
-				aux = trajeto->GetLojaB().GetIdentificacao();
-				AdicionaTrajetoAVetor(trajetos, trajeto, pontos);
-				break;
+			Trajeto a = trajetos->at(j).GetLojaA().GetTrajetos().size() == 0 ? a : trajetos->at(j).GetLojaA().GetTrajetos().back();
+			Trajeto b = trajetos->at(j).GetLojaB().GetTrajetos().size() == 0 ? b : trajetos->at(j).GetLojaB().GetTrajetos().back();
+
+			while (pontos->at(a.GetLojaB().GetIdentificacao()).GetQuantidade() > 0) {
+				trajetos->at(j).GetLojaA().RemoveUltimoTrajeto();
+				a = trajetos->at(j).GetLojaA().GetTrajetos().size() == 0 ? a : trajetos->at(j).GetLojaA().GetTrajetos().back();
 			}
+			while (pontos->at(b.GetLojaB().GetIdentificacao()).GetQuantidade() > 0) {
+				trajetos->at(j).GetLojaB().RemoveUltimoTrajeto();
+				b = trajetos->at(j).GetLojaB().GetTrajetos().size() == 0 ? b : trajetos->at(j).GetLojaB().GetTrajetos().back();
+			}
+			trajetoMinimo = a.GetDistancia() < b.GetDistancia() ? a : b;
 		}
+		AdicionaTrajetoAVetor(trajetos, &trajetoMinimo, pontos);
 	}
-	*trajeto = Utils::GetTrajetoLigarPontas(pontos, *lojas);
-	AdicionaTrajetoAVetor(trajetos, trajeto, pontos);
+	//*trajeto = Utils::GetTrajetoLigarPontas(pontos, *lojas);
+	//AdicionaTrajetoAVetor(trajetos, trajeto, pontos);
 
 	return *trajetos;
 }
@@ -112,9 +121,9 @@ Trajeto Utils::GetTrajetoLigarPontas(vector<Ponto>* pontos, vector<Loja*> lojas)
 	return *new Trajeto(lojas.at(a), lojas.at(b));
 }
 
-vector<Trajeto> Utils::GetTrajetosPorDrone(vector<Trajeto>* trajetos, int qtdDrones)
+vector<Trajeto> Utils::GetTrajetosPorDrone(vector<Trajeto> trajetos, int qtdDrones)
 {
-	vector<vector<Trajeto>>* opcoesDeTrajetos = new vector<vector<Trajeto>>;
+	/*vector<vector<Trajeto>>* opcoesDeTrajetos = new vector<vector<Trajeto>>;
 	vector<Trajeto> auxiliar = vector<Trajeto>();
 
 	for (size_t j = 0; j < trajetos->size(); j++)
@@ -141,6 +150,13 @@ vector<Trajeto> Utils::GetTrajetosPorDrone(vector<Trajeto>* trajetos, int qtdDro
 			valorSomaMax = somaAtual;
 			somaMax = opcoesDeTrajetos->at(i);
 		}
+	}*/
+
+	vector<Trajeto> somaMax = vector<Trajeto>();
+	for (size_t i = 0; i < qtdDrones - 1; i++)
+	{
+		somaMax.push_back(trajetos.back());
+		trajetos.pop_back();
 	}
 
 	return somaMax;
@@ -217,7 +233,7 @@ double Utils::SomarTamanhoTrajetos(vector<Trajeto> trajetos)
 void Utils::RemoveTrajetoDrone(vector<Trajeto>* trajetos, int qtdDrones)
 {
 	vector<Trajeto> trajetosPorDrone = vector<Trajeto>();
-	trajetosPorDrone = GetTrajetosPorDrone(trajetos, qtdDrones);
+	trajetosPorDrone = GetTrajetosPorDrone(*trajetos, qtdDrones);
 
 	for (size_t i = 0; i < trajetos->size(); i++)
 	{
@@ -231,3 +247,4 @@ void Utils::RemoveTrajetoDrone(vector<Trajeto>* trajetos, int qtdDrones)
 		}
 	}
 }
+

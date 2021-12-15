@@ -64,3 +64,9 @@ vector<Trajeto> Loja::GetTrajetos()
 {
 	return *this->trajetos;
 }
+
+void Loja::RemoveUltimoTrajeto()
+{
+	if (this->trajetos->size() > 0)
+		this->trajetos->pop_back();
+}

@@ -54,7 +54,7 @@ int main(int argc, const char* argv[])
 	int qtdLojas = 0, kmMaxMoto = 0, qtdDrones = 0, custoKmMoto = 0, custoKmCaminhao = 0;
 	string result;
 	char Linha[100];
-	argv[1] = "C:\\Users\\Gabriel\\source\\repos\\TP02Alg1\\TP02Alg1\\test_4.txt";
+	argv[1] = "C:\\Users\\Gabriel\\source\\repos\\TP02Alg1\\TP02Alg1\\test_6.txt";
 	FILE* arquivo = fopen(argv[1], "rt");
 	result = fgets(Linha, 100, arquivo);
 	SetValoresEntrada(&qtdLojas, &kmMaxMoto, &qtdDrones, &custoKmMoto, &custoKmCaminhao, result);
@@ -70,10 +70,8 @@ int main(int argc, const char* argv[])
 		lojas->at(i)->SetTrajetos(lojas);
 	}
 	vector<Ponto> pontos = Utils::CreateVetorPontos(lojas);
-	vector<Trajeto> trajetos = Utils::SelecionaMelhorTrajeto(lojas, &pontos, &todosTrajetos->front());
+ 	vector<Trajeto> trajetos = Utils::SelecionaMelhorTrajeto(lojas, &pontos, &todosTrajetos->back());
 
-	Utils::RemoveMaiorTrajeto(&trajetos, &pontos);
-	Utils::OrdenaCaminho(&trajetos, &pontos);
 
 	Utils::RemoveTrajetoDrone(&trajetos, qtdDrones);
 	double custoMoto = Utils::GetCustoPorMotos(&trajetos, kmMaxMoto, custoKmMoto);

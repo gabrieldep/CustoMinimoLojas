@@ -8,7 +8,7 @@ Trajeto::Trajeto()
 {
     this->a = new Loja();
     this->b = new Loja();
-    this->distancia = 0;
+    this->distancia = INT64_MAX;
 }
 
 Trajeto::Trajeto(Loja* a, Loja* b)

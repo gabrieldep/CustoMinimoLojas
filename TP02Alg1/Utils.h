@@ -10,15 +10,15 @@ class Utils
 public:
 	static vector<Trajeto> SortTrajetos(vector<Trajeto>* trajetos);
 	static bool MaiorDistancia(Trajeto t1, Trajeto t2);
-	static bool EstaNoVetor(vector<Trajeto>* trajetos, Trajeto l1, vector<Ponto>* pontos);
+	static bool EstaNoVetor(vector<Trajeto> l1, vector<Ponto>* pontos);
 	static void RemoveMaiorTrajeto(vector<Trajeto>* trajetos, vector<Ponto>* pontos);
 	static vector<Trajeto> SelecionaMelhorTrajeto(vector<Loja*>* lojas, vector<Ponto>* pontos, Trajeto* menorTrajeto);
 	static void AdicionaTrajetoAVetor(vector<Trajeto>* trajetos, Trajeto* trajeto, vector<Ponto>* pontos);
 	static void CalcularTodosTrajetos(vector<Loja*>* lojas, vector<Trajeto>* trajetos);
-	static void UpdatePontosPercorridos( vector<Ponto>* pontos, int ponto1, int ponto2);
+	static void UpdatePontosPercorridos(vector<Ponto>* pontos, int ponto1, int ponto2);
 	static vector<Ponto> CreateVetorPontos(vector<Loja*>* lojas);
 	static Trajeto GetTrajetoLigarPontas(vector<Ponto>* pontos, vector<Loja*> lojas);
-	static vector<Trajeto> GetTrajetosPorDrone(vector<Trajeto>* trajetos, int qtdDrones);
+	static vector<Trajeto> GetTrajetosPorDrone(vector<Trajeto> trajetos, int qtdDrones);
 	static double GetCustoPorMotos(vector<Trajeto>* trajetos, int kmMaxMoto, int custoKmMoto);
 	static double GetCustoPorCaminhao(vector<Trajeto>* trajetos, int kmMaxMoto, int custoKmCaminhao);
 	static void OrdenaCaminho(vector<Trajeto>* trajetos, vector<Ponto>* pontos);
