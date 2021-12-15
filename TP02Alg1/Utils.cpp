@@ -4,9 +4,9 @@
 #include <vector>
 #include <algorithm>
 
-vector<Trajeto> Utils::SortTrajetos(vector<Trajeto>* trajetos)
+vector<Trajeto> Utils::SortTrajetos(vector<Trajeto>* trajetos, bool crescente)
 {
-	sort(trajetos->begin(), trajetos->end(), MaiorDistancia);
+	sort(trajetos->begin(), trajetos->end(), crescente ? MaiorDistancia : MenorDistancia);
 	return *trajetos;
 }
 
@@ -14,6 +14,12 @@ bool Utils::MaiorDistancia(Trajeto t1, Trajeto t2)
 {
 	return t1.GetDistancia() > t2.GetDistancia();
 }
+
+bool Utils::MenorDistancia(Trajeto t1, Trajeto t2)
+{
+	return t1.GetDistancia() < t2.GetDistancia();
+}
+
 
 bool Utils::EstaNoVetor(vector<Trajeto> atual, vector<Ponto>* pontos)
 {
@@ -28,7 +34,7 @@ bool Utils::EstaNoVetor(vector<Trajeto> atual, vector<Ponto>* pontos)
 
 void Utils::RemoveMaiorTrajeto(vector<Trajeto>* trajetos, vector<Ponto>* pontos)
 {
-	SortTrajetos(trajetos);
+	SortTrajetos(trajetos, true);
 	Trajeto trajetoAux = trajetos->back();
 	pontos->at(trajetoAux.GetLojaA().GetIdentificacao()).SomaQuantidade(-1);
 	pontos->at(trajetoAux.GetLojaB().GetIdentificacao()).SomaQuantidade(-1);
@@ -38,17 +44,17 @@ void Utils::RemoveMaiorTrajeto(vector<Trajeto>* trajetos, vector<Ponto>* pontos)
 vector<Trajeto> Utils::SelecionaMelhorTrajeto(vector<Loja*>* lojas, vector<Ponto>* pontos, Trajeto* menorTrajeto)
 {
 	vector<Trajeto>* trajetos = new vector<Trajeto>;
-	Trajeto* trajeto = new Trajeto();
 	Trajeto trajetoMinimo = Trajeto();
-
+	Trajeto a = Trajeto();
+	Trajeto b = Trajeto();
 	AdicionaTrajetoAVetor(trajetos, menorTrajeto, pontos);
 
 	while (trajetos->size() < lojas->size() - 1)
 	{
 		for (size_t j = 0; j < trajetos->size(); j++)
 		{
-			Trajeto a = trajetos->at(j).GetLojaA().GetTrajetos().size() == 0 ? a : trajetos->at(j).GetLojaA().GetTrajetos().back();
-			Trajeto b = trajetos->at(j).GetLojaB().GetTrajetos().size() == 0 ? b : trajetos->at(j).GetLojaB().GetTrajetos().back();
+			a = trajetos->at(j).GetLojaA().GetTrajetos().size() == 0 ? a : trajetos->at(j).GetLojaA().GetTrajetos().back();
+			b = trajetos->at(j).GetLojaB().GetTrajetos().size() == 0 ? b : trajetos->at(j).GetLojaB().GetTrajetos().back();
 
 			while (pontos->at(a.GetLojaB().GetIdentificacao()).GetQuantidade() > 0) {
 				trajetos->at(j).GetLojaA().RemoveUltimoTrajeto();
@@ -62,9 +68,6 @@ vector<Trajeto> Utils::SelecionaMelhorTrajeto(vector<Loja*>* lojas, vector<Ponto
 		}
 		AdicionaTrajetoAVetor(trajetos, &trajetoMinimo, pontos);
 	}
-	//*trajeto = Utils::GetTrajetoLigarPontas(pontos, *lojas);
-	//AdicionaTrajetoAVetor(trajetos, trajeto, pontos);
-
 	return *trajetos;
 }
 
@@ -123,43 +126,14 @@ Trajeto Utils::GetTrajetoLigarPontas(vector<Ponto>* pontos, vector<Loja*> lojas)
 
 vector<Trajeto> Utils::GetTrajetosPorDrone(vector<Trajeto> trajetos, int qtdDrones)
 {
-	/*vector<vector<Trajeto>>* opcoesDeTrajetos = new vector<vector<Trajeto>>;
-	vector<Trajeto> auxiliar = vector<Trajeto>();
-
-	for (size_t j = 0; j < trajetos->size(); j++)
-	{
-		auxiliar = vector<Trajeto>();
-		for (size_t y = j; y < j + qtdDrones - 1; y++)
-		{
-			try {
-				auxiliar.push_back(trajetos->at(y));
-			}
-			catch (exception) {
-				break;
-			}
-		}
-		opcoesDeTrajetos->push_back(auxiliar);
-	}
-
-	vector<Trajeto> somaMax = vector<Trajeto>();
-	double valorSomaMax = 0.0;
-	for (size_t i = 0; i < opcoesDeTrajetos->size(); i++)
-	{
-		double somaAtual = SomarTamanhoTrajetos(opcoesDeTrajetos->at(i));
-		if (somaAtual > valorSomaMax) {
-			valorSomaMax = somaAtual;
-			somaMax = opcoesDeTrajetos->at(i);
-		}
-	}*/
-
-	vector<Trajeto> somaMax = vector<Trajeto>();
+	vector<Trajeto> trajetosDrone = vector<Trajeto>();
 	for (size_t i = 0; i < qtdDrones - 1; i++)
 	{
-		somaMax.push_back(trajetos.back());
+		trajetosDrone.push_back(trajetos.back());
 		trajetos.pop_back();
 	}
 
-	return somaMax;
+	return trajetosDrone;
 }
 
 double Utils::GetCustoPorMotos(vector<Trajeto>* trajetos, int kmMaxMoto, int custoKmMoto)
@@ -182,42 +156,6 @@ double Utils::GetCustoPorCaminhao(vector<Trajeto>* trajetos, int kmMaxMoto, int 
 			custoTotalCaminhao += trajetos->at(i).GetDistancia() * custoKmCaminhao;
 	}
 	return custoTotalCaminhao;
-}
-
-void Utils::OrdenaCaminho(vector<Trajeto>* trajetos, vector<Ponto>* pontos)
-{
-	vector<Trajeto>* trajetosOrdenados = new vector<Trajeto>;
-	Trajeto* trajeto = new Trajeto();
-	int verticeAtual = -1;
-	int pontoA = -1;
-	int pontoB = -1;
-	int lastPontoA = -1, lastPontoB = -1;
-	for (size_t i = 0; i < pontos->size(); i++)
-	{
-		if (pontos->at(i).GetQuantidade() == 1) {
-			verticeAtual = i;
-			break;
-		}
-	}
-
-	for (size_t j = 0; j < pontos->size(); j++)
-	{
-		for (size_t i = 0; i < trajetos->size(); i++)
-		{
-			trajeto = &trajetos->at(i);
-			pontoA = trajetos->at(i).GetLojaA().GetIdentificacao();
-			pontoB = trajetos->at(i).GetLojaB().GetIdentificacao();
-			if ((verticeAtual == pontoA
-				|| verticeAtual == pontoB) && (lastPontoA != pontoA || lastPontoB != pontoB)) {
-				trajetosOrdenados->push_back(*trajeto);
-				break;
-			}
-		}
-		lastPontoA = pontoA;
-		lastPontoB = pontoB;
-		verticeAtual = verticeAtual == pontoA ? pontoB : pontoA;
-	}
-	*trajetos = *trajetosOrdenados;
 }
 
 double Utils::SomarTamanhoTrajetos(vector<Trajeto> trajetos)

@@ -47,7 +47,7 @@ void Loja::SetTrajetos(vector<Loja*>* lojas)
 			this->trajetos->push_back(*new Trajeto(this, lojas->at(i)));
 		}
 	}
-	Utils::SortTrajetos(this->trajetos);
+	Utils::SortTrajetos(this->trajetos, true);
 }
 
 void Loja::SetTrajetos(vector<Trajeto>* trajetos)

@@ -8,8 +8,9 @@
 class Utils
 {
 public:
-	static vector<Trajeto> SortTrajetos(vector<Trajeto>* trajetos);
+	static vector<Trajeto> SortTrajetos(vector<Trajeto>* trajetos, bool crescente);
 	static bool MaiorDistancia(Trajeto t1, Trajeto t2);
+	static bool MenorDistancia(Trajeto t1, Trajeto t2);
 	static bool EstaNoVetor(vector<Trajeto> l1, vector<Ponto>* pontos);
 	static void RemoveMaiorTrajeto(vector<Trajeto>* trajetos, vector<Ponto>* pontos);
 	static vector<Trajeto> SelecionaMelhorTrajeto(vector<Loja*>* lojas, vector<Ponto>* pontos, Trajeto* menorTrajeto);
@@ -21,7 +22,6 @@ public:
 	static vector<Trajeto> GetTrajetosPorDrone(vector<Trajeto> trajetos, int qtdDrones);
 	static double GetCustoPorMotos(vector<Trajeto>* trajetos, int kmMaxMoto, int custoKmMoto);
 	static double GetCustoPorCaminhao(vector<Trajeto>* trajetos, int kmMaxMoto, int custoKmCaminhao);
-	static void OrdenaCaminho(vector<Trajeto>* trajetos, vector<Ponto>* pontos);
 	static double SomarTamanhoTrajetos(vector<Trajeto> trajetos);
 	static void RemoveTrajetoDrone(vector<Trajeto>* trajetos, int qtdDrones);
 };
