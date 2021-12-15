@@ -54,7 +54,6 @@ int main(int argc, const char* argv[])
 	int qtdLojas = 0, kmMaxMoto = 0, qtdDrones = 0, custoKmMoto = 0, custoKmCaminhao = 0;
 	string result;
 	char Linha[100];
-	argv[1] = "C:\\Users\\Gabriel\\source\\repos\\TP02Alg1\\TP02Alg1\\test_8.txt";
 	FILE* arquivo = fopen(argv[1], "rt");
 	result = fgets(Linha, 100, arquivo);
 	SetValoresEntrada(&qtdLojas, &kmMaxMoto, &qtdDrones, &custoKmMoto, &custoKmCaminhao, result);
