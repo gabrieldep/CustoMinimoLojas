@@ -23,6 +23,9 @@ Trajeto::~Trajeto()
 {
 }
 
+/// <summary>
+/// Calcula distancia entre dois vértices do grafo.
+/// </summary>
 void Trajeto::CalcularDistancia()
 {
     this->distancia = this->a->GetLocalizacao().CalcularDistancia(b->GetLocalizacao());
@@ -53,6 +56,11 @@ Loja Trajeto::GetLojaB()
     return *b;
 }
 
+/// <summary>
+/// Verifica se dois trajetos representam a mesma aresta do grafo.
+/// </summary>
+/// <param name="t2">Trajeto a ser comparado com o atual.</param>
+/// <returns>True se forem iguais, False caso contrário.</returns>
 bool Trajeto::Equals(Trajeto t2)
 {
     int atualA = this->a->GetIdentificacao();
