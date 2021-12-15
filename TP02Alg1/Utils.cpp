@@ -186,3 +186,11 @@ void Utils::RemoveTrajetoDrone(vector<Trajeto>* trajetos, int qtdDrones)
 	}
 }
 
+void Utils::SetarTrajetosPorLoja(vector<Loja*> lojas)
+{
+	for (size_t i = 0; i < lojas.size(); i++)
+	{
+		lojas.at(i)->SetTrajetos(&lojas);
+	}
+}
+

@@ -24,5 +24,6 @@ public:
 	static double GetCustoPorCaminhao(vector<Trajeto>* trajetos, int kmMaxMoto, int custoKmCaminhao);
 	static double SomarTamanhoTrajetos(vector<Trajeto> trajetos);
 	static void RemoveTrajetoDrone(vector<Trajeto>* trajetos, int qtdDrones);
+	static void SetarTrajetosPorLoja(vector<Loja*> lojas);
 };
 

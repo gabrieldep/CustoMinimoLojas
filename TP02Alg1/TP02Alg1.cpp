@@ -78,11 +78,8 @@ int main(int argc, const char* argv[])
 	vector<Trajeto>* todosTrajetos = new vector<Trajeto>;
 	Utils::CalcularTodosTrajetos(lojas, todosTrajetos);
 	Utils::SortTrajetos(todosTrajetos, true);
+	Utils::SetarTrajetosPorLoja(*lojas);
 
-	for (size_t i = 0; i < qtdLojas; i++)
-	{
-		lojas->at(i)->SetTrajetos(lojas);
-	}
 	vector<Ponto> pontos = Utils::CreateVetorPontos(lojas);
  	vector<Trajeto> trajetos = Utils::SelecionaMelhorTrajeto(lojas, &pontos, &todosTrajetos->back());
 	Utils::SortTrajetos(&trajetos, false);
