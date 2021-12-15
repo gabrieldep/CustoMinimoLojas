@@ -17,12 +17,14 @@ Localizacao::~Localizacao()
 {
 }
 
+/// <summary>
+/// Calcula distancia entre duas localizações
+/// </summary>
+/// <param name="localizacao">Segunda localização para calcular a distancia;</param>
+/// <returns>Distancia entre as duas localizações;</returns>
 double Localizacao::CalcularDistancia(Localizacao localizacao)
 {
-	double xQuadrado = pow(localizacao.GetX() - this->x, 2);
-	double yQuadrado = pow(localizacao.GetY() - this->y, 2);
-	double teste = sqrt(xQuadrado + yQuadrado);
-	return teste;
+	return sqrt(pow(localizacao.GetX() - this->x, 2) + pow(localizacao.GetY() - this->y, 2));
 }
 
 void Localizacao::SetX(double x)
