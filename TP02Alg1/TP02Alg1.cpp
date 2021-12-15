@@ -8,6 +8,15 @@
 
 using namespace std;
 
+/// <summary>
+/// Transforma a string lida na primeira linha nos determinados inteiros que cada número representa
+/// </summary>
+/// <param name="qtdLojas">Quantidade de lojas para serem cadastradas.</param>
+/// <param name="kmMaxMoto">Quilometro máximo que moto pode percorrer.</param>
+/// <param name="qtdDrones">Quantidade de drones disponíveis para fazer os trajetos.</param>
+/// <param name="custoKmMoto">Custo para percorrer 1 km de moto.</param>
+/// <param name="custoKmCaminhao">Custo para percorrer 1 km de caminhão.</param>
+/// <param name="leitura">String com os dados para preencher os inteiros.</param>
 void SetValoresEntrada(int* qtdLojas, int* kmMaxMoto, int* qtdDrones, int* custoKmMoto, int* custoKmCaminhao, string leitura)
 {
 	int posicao = 0;
@@ -31,6 +40,12 @@ void SetValoresEntrada(int* qtdLojas, int* kmMaxMoto, int* qtdDrones, int* custo
 	}
 }
 
+/// <summary>
+/// Faz a leitura dos arquivos e cadastra as lojas.
+/// </summary>
+/// <param name="lojas">Vetor de lojas para ser preenchido.</param>
+/// <param name="qtdLojas">Quantidade de lojas que serão cadastradas.</param>
+/// <param name="arquivo">Arquivo para fazer a leitura.</param>
 void CadastraLojas(vector<Loja*>* lojas, int qtdLojas, FILE* arquivo)
 {
 	char Linha[100];
