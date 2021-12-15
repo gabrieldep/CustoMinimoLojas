@@ -23,7 +23,7 @@ public:
 	void SetTrajetos(vector<Loja*>* lojas);
 	void SetTrajetos(vector<Trajeto>* lojas);
 	Localizacao GetLocalizacao();
-	vector<Trajeto> GetTrajetos();
+	vector<Trajeto>* GetTrajetos();
 	void RemoveUltimoTrajeto();
 	static void SetarTrajetosPorLoja(vector<Loja*> lojas);
 };

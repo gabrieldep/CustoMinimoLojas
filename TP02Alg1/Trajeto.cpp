@@ -46,14 +46,14 @@ void Trajeto::SetLojaB(Loja b)
     this->b = &b;
 }
 
-Loja Trajeto::GetLojaA()
+Loja* Trajeto::GetLojaA()
 {
-    return *a;
+    return a;
 }
 
-Loja Trajeto::GetLojaB()
+Loja* Trajeto::GetLojaB()
 {
-    return *b;
+    return b;
 }
 
 /// <summary>
@@ -65,8 +65,13 @@ bool Trajeto::Equals(Trajeto t2)
 {
     int atualA = this->a->GetIdentificacao();
     int atualB = this->b->GetIdentificacao();
-    int t2A = t2.GetLojaA().GetIdentificacao();
-    int t2B = t2.GetLojaB().GetIdentificacao();
+    int t2A = t2.GetLojaA()->GetIdentificacao();
+    int t2B = t2.GetLojaB()->GetIdentificacao();
 
     return (atualA == t2A && atualB == t2B) || (atualB == t2A && atualA == t2B);
+}
+
+Trajeto* Trajeto::GetProximoTrajeto(vector<Trajeto>* trajetos)
+{
+    return trajetos->size() == 0 ? this : &trajetos->back();
 }

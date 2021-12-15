@@ -5,6 +5,8 @@
 #include <string>
 class Loja;
 
+using namespace std;
+
 class Trajeto
 {
 private:
@@ -19,8 +21,9 @@ public:
 	double GetDistancia();
 	void SetLojaA(Loja a);
 	void SetLojaB(Loja b);
-	Loja GetLojaA();
-	Loja GetLojaB();
+	Loja* GetLojaA();
+	Loja* GetLojaB();
 	bool Equals(Trajeto t2);
+	Trajeto* GetProximoTrajeto(vector<Trajeto>* trajetos);
 };
 

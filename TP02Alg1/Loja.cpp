@@ -64,9 +64,9 @@ Localizacao Loja::GetLocalizacao()
 	return *this->localizacao;
 }
 
-vector<Trajeto> Loja::GetTrajetos()
+vector<Trajeto>* Loja::GetTrajetos()
 {
-	return *this->trajetos;
+	return this->trajetos;
 }
 
 /// <summary>

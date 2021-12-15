@@ -58,22 +58,22 @@ void Utils::SelecionaMelhorTrajeto()
 	Trajeto trajetoMinimo = Trajeto();
 	Trajeto a = Trajeto();
 	Trajeto b = Trajeto();
-	AdicionaTrajetoAVetor(trajetos, &lojas->at(0)->GetTrajetos().back(), pontos);
+	AdicionaTrajetoAVetor(trajetos, &lojas->at(0)->GetTrajetos()->back(), pontos);
 
 	while (trajetos->size() < lojas->size() - 1)
 	{
 		for (size_t j = 0; j < trajetos->size(); j++)
 		{
-			a = trajetos->at(j).GetLojaA().GetTrajetos().size() == 0 ? a : trajetos->at(j).GetLojaA().GetTrajetos().back();
-			b = trajetos->at(j).GetLojaB().GetTrajetos().size() == 0 ? b : trajetos->at(j).GetLojaB().GetTrajetos().back();
+			a = *a.GetProximoTrajeto(trajetos->at(j).GetLojaA()->GetTrajetos());
+			b = *b.GetProximoTrajeto(trajetos->at(j).GetLojaB()->GetTrajetos());
 
-			while (pontos->at(a.GetLojaB().GetIdentificacao()).GetQuantidade() > 0) {
-				trajetos->at(j).GetLojaA().RemoveUltimoTrajeto();
-				a = trajetos->at(j).GetLojaA().GetTrajetos().size() == 0 ? a : trajetos->at(j).GetLojaA().GetTrajetos().back();
+			while (pontos->at(a.GetLojaB()->GetIdentificacao()).GetQuantidade() > 0) {
+				trajetos->at(j).GetLojaA()->RemoveUltimoTrajeto();
+				a = *a.GetProximoTrajeto(trajetos->at(j).GetLojaA()->GetTrajetos());
 			}
-			while (pontos->at(b.GetLojaB().GetIdentificacao()).GetQuantidade() > 0) {
-				trajetos->at(j).GetLojaB().RemoveUltimoTrajeto();
-				b = trajetos->at(j).GetLojaB().GetTrajetos().size() == 0 ? b : trajetos->at(j).GetLojaB().GetTrajetos().back();
+			while (pontos->at(b.GetLojaB()->GetIdentificacao()).GetQuantidade() > 0) {
+				trajetos->at(j).GetLojaB()->RemoveUltimoTrajeto();
+				b = *b.GetProximoTrajeto(trajetos->at(j).GetLojaB()->GetTrajetos());
 			}
 			trajetoMinimo = a.GetDistancia() < b.GetDistancia() ? a : b;
 		}
@@ -100,8 +100,8 @@ void Utils::AdicionaTrajetoAVetor(vector<Trajeto>* trajetos, Trajeto* trajeto, v
 /// <param name="trajeto">Trajeto para adicionar os vertices.</param>
 void Utils::UpdatePontosPercorridos(vector<Ponto>* pontos, Trajeto trajeto)
 {
-	pontos->at(trajeto.GetLojaA().GetIdentificacao()).SomaQuantidade(1);
-	pontos->at(trajeto.GetLojaB().GetIdentificacao()).SomaQuantidade(1);
+	pontos->at(trajeto.GetLojaA()->GetIdentificacao()).SomaQuantidade(1);
+	pontos->at(trajeto.GetLojaB()->GetIdentificacao()).SomaQuantidade(1);
 }
 
 /// <summary>
