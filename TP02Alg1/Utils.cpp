@@ -45,13 +45,13 @@ bool Utils::MenorDistancia(Trajeto t1, Trajeto t2)
 /// <param name="pontos">Lista de pontos para fazer o controle.</param>
 /// <param name="menorTrajeto">Menor vértice do grafo- Ponto de partida da árvore minima geradora</param>
 /// <returns>Lista com os trajetos que formam a ávore mínima geradora.</returns>
-vector<Trajeto> Utils::SelecionaMelhorTrajeto(vector<Loja*>* lojas, vector<Ponto>* pontos, Trajeto* menorTrajeto)
+vector<Trajeto> Utils::SelecionaMelhorTrajeto(vector<Loja*>* lojas, vector<Ponto>* pontos)
 {
 	vector<Trajeto>* trajetos = new vector<Trajeto>;
 	Trajeto trajetoMinimo = Trajeto();
 	Trajeto a = Trajeto();
 	Trajeto b = Trajeto();
-	AdicionaTrajetoAVetor(trajetos, menorTrajeto, pontos);
+	AdicionaTrajetoAVetor(trajetos, &lojas->at(0)->GetTrajetos().back(), pontos);
 
 	while (trajetos->size() < lojas->size() - 1)
 	{
@@ -85,24 +85,6 @@ void Utils::AdicionaTrajetoAVetor(vector<Trajeto>* trajetos, Trajeto* trajeto, v
 {
 	trajetos->push_back(*trajeto);
 	UpdatePontosPercorridos(pontos, *trajeto);
-}
-
-/// <summary>
-/// Calcula todas as possibilidades de caminho entre todas as lojas- sem repetição [(n * (n -1)) / 2!]
-/// </summary>
-/// <param name="lojas"></param>
-/// <param name="trajetos"></param>
-void Utils::CalcularTodosTrajetos(vector<Loja*>* lojas, vector<Trajeto>* trajetos)
-{
-	for (size_t i = 0; i < lojas->size(); i++)
-	{
-		for (size_t j = i + 1; j < lojas->size(); j++)
-		{
-			if (i != j) {
-				trajetos->push_back(*new Trajeto(lojas->at(i), lojas->at(j)));
-			}
-		}
-	}
 }
 
 /// <summary>
