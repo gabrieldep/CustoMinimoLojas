@@ -69,7 +69,7 @@ int main(int argc, const char* argv[])
 	int qtdLojas = 0, kmMaxMoto = 0, qtdDrones = 0, custoKmMoto = 0, custoKmCaminhao = 0;
 	string result;
 	char Linha[100];
-	argv[1] = "C:\\Users\\Gabriel\\source\\repos\\TP02Alg1\\TP02Alg1\\test_8.txt";
+	argv[1] = "C:\\Users\\Gabriel\\source\\repos\\TP02Alg1\\TP02Alg1\\test_1.txt";
 	FILE* arquivo = fopen(argv[1], "rt");
 	result = fgets(Linha, 100, arquivo);
 	SetValoresEntrada(&qtdLojas, &kmMaxMoto, &qtdDrones, &custoKmMoto, &custoKmCaminhao, result);
@@ -77,13 +77,11 @@ int main(int argc, const char* argv[])
 	vector<Loja*>* lojas = new vector<Loja*>;
 	CadastraLojas(lojas, qtdLojas, arquivo);
 	Loja::SetarTrajetosPorLoja(*lojas);
+	Utils* utils = new Utils(lojas);
+	utils->RemoveTrajetoDrone(qtdDrones);
 
-	vector<Ponto> pontos = Ponto::CreateVetorPontos(lojas);
- 	vector<Trajeto> trajetos = Utils::SelecionaMelhorTrajeto(lojas, &pontos);
-
-	Utils::RemoveTrajetoDrone(&trajetos, qtdDrones);
-	double custoMoto = Utils::GetCustoPorMotos(&trajetos, kmMaxMoto, custoKmMoto);
-	double custoCaminhao = Utils::GetCustoPorCaminhao(&trajetos, kmMaxMoto, custoKmCaminhao);
-	printf("%.3f %.3f", custoMoto, custoCaminhao);
+	printf("%.3f %.3f", 
+		utils->GetCustoPorMotos(kmMaxMoto, custoKmMoto), 
+		utils->GetCustoPorCaminhao(kmMaxMoto, custoKmCaminhao));
 	fclose(arquivo);
 }

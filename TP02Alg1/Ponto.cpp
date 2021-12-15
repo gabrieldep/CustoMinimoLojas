@@ -41,12 +41,12 @@ int Ponto::GetQuantidade()
 /// </summary>
 /// <param name="lojas">Lista com as lojas para fazer o controle</param>
 /// <returns></returns>
-vector<Ponto> Ponto::CreateVetorPontos(vector<Loja*>* lojas)
+vector<Ponto>* Ponto::CreateVetorPontos(vector<Loja*>* lojas)
 {
     vector<Ponto>* pontos = new vector<Ponto>;
     for (size_t i = 0; i < lojas->size(); i++)
     {
         pontos->push_back(*new Ponto(i, 0));
     }
-    return *pontos;
+    return pontos;
 }

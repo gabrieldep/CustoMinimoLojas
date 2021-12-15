@@ -4,6 +4,13 @@
 #include <vector>
 #include <algorithm>
 
+Utils::Utils(vector<Loja*>* lojas)
+{
+	this->lojas = lojas;
+	this->pontos = Ponto::CreateVetorPontos(lojas);
+	SelecionaMelhorTrajeto();
+}
+
 /// <summary>
 /// Sort trajetos em ordem crescente ou descresente
 /// </summary>
@@ -45,9 +52,9 @@ bool Utils::MenorDistancia(Trajeto t1, Trajeto t2)
 /// <param name="pontos">Lista de pontos para fazer o controle.</param>
 /// <param name="menorTrajeto">Menor vértice do grafo- Ponto de partida da árvore minima geradora</param>
 /// <returns>Lista com os trajetos que formam a ávore mínima geradora.</returns>
-vector<Trajeto> Utils::SelecionaMelhorTrajeto(vector<Loja*>* lojas, vector<Ponto>* pontos)
+void Utils::SelecionaMelhorTrajeto()
 {
-	vector<Trajeto>* trajetos = new vector<Trajeto>;
+	this->trajetos = new vector<Trajeto>;
 	Trajeto trajetoMinimo = Trajeto();
 	Trajeto a = Trajeto();
 	Trajeto b = Trajeto();
@@ -72,7 +79,6 @@ vector<Trajeto> Utils::SelecionaMelhorTrajeto(vector<Loja*>* lojas, vector<Ponto
 		}
 		AdicionaTrajetoAVetor(trajetos, &trajetoMinimo, pontos);
 	}
-	return *trajetos;
 }
 
 /// <summary>
@@ -125,13 +131,13 @@ vector<Trajeto> Utils::GetTrajetosPorDrone(vector<Trajeto> trajetos, int qtdDron
 /// <param name="kmMaxMoto">Quilometragem maxima que um trajeto pode ser feito por moto.</param>
 /// <param name="custoKmCaminhao">Custo por quilometro percorrido de moto.</param>
 /// <returns>Valor total gasto com motos</returns>
-double Utils::GetCustoPorMotos(vector<Trajeto>* trajetos, int kmMaxMoto, int custoKmMoto)
+double Utils::GetCustoPorMotos(int kmMaxMoto, int custoKmMoto)
 {
 	double custoTotalMoto = 0.0;
-	for (size_t i = 0; i < trajetos->size(); i++)
+	for (size_t i = 0; i < this->trajetos->size(); i++)
 	{
-		if (trajetos->at(i).GetDistancia() <= kmMaxMoto)
-			custoTotalMoto += trajetos->at(i).GetDistancia() * custoKmMoto;
+		if (this->trajetos->at(i).GetDistancia() <= kmMaxMoto)
+			custoTotalMoto += this->trajetos->at(i).GetDistancia() * custoKmMoto;
 	}
 	return custoTotalMoto;
 }
@@ -143,13 +149,13 @@ double Utils::GetCustoPorMotos(vector<Trajeto>* trajetos, int kmMaxMoto, int cus
 /// <param name="kmMaxMoto">Quilometragem maxima que um trajeto pode ser feito por moto.</param>
 /// <param name="custoKmCaminhao">Custo por quilometro percorrido de caminhão.</param>
 /// <returns>Valor total gasto com caminhões</returns>
-double Utils::GetCustoPorCaminhao(vector<Trajeto>* trajetos, int kmMaxMoto, int custoKmCaminhao)
+double Utils::GetCustoPorCaminhao(int kmMaxMoto, int custoKmCaminhao)
 {
 	double custoTotalCaminhao = 0.0;
-	for (size_t i = 0; i < trajetos->size(); i++)
+	for (size_t i = 0; i < this->trajetos->size(); i++)
 	{
-		if (trajetos->at(i).GetDistancia() > kmMaxMoto)
-			custoTotalCaminhao += trajetos->at(i).GetDistancia() * custoKmCaminhao;
+		if (this->trajetos->at(i).GetDistancia() > kmMaxMoto)
+			custoTotalCaminhao += this->trajetos->at(i).GetDistancia() * custoKmCaminhao;
 	}
 	return custoTotalCaminhao;
 }
@@ -159,17 +165,17 @@ double Utils::GetCustoPorCaminhao(vector<Trajeto>* trajetos, int kmMaxMoto, int 
 /// </summary>
 /// <param name="trajetos">Lista com os trajetos a serem percorridos.</param>
 /// <param name="qtdDrones">Quantidade de drones disponíveis</param>
-void Utils::RemoveTrajetoDrone(vector<Trajeto>* trajetos, int qtdDrones)
+void Utils::RemoveTrajetoDrone(int qtdDrones)
 {
 	vector<Trajeto> trajetosPorDrone = vector<Trajeto>();
-	trajetosPorDrone = GetTrajetosPorDrone(*trajetos, qtdDrones);
+	trajetosPorDrone = GetTrajetosPorDrone(*this->trajetos, qtdDrones);
 
-	for (size_t i = 0; i < trajetos->size(); i++)
+	for (size_t i = 0; i < this->trajetos->size(); i++)
 	{
 		for (size_t j = 0; j < trajetosPorDrone.size(); j++)
 		{
-			if (trajetos->at(i).Equals(trajetosPorDrone.at(j))) {
-				trajetos->erase(trajetos->begin() + i);
+			if (this->trajetos->at(i).Equals(trajetosPorDrone.at(j))) {
+				this->trajetos->erase(this->trajetos->begin() + i);
 				i--;
 				break;
 			}
